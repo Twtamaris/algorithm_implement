@@ -1,16 +1,11 @@
-height = int(input("Enter the number of height in tree: "))
-branch = int(input("Enter the number of branch in node: "))
-
 def total_nodes(height, branch):
     height = height+ 1
     total_nodes = 0
     for i in range(height):
         total_nodes += branch ** i
     return total_nodes
-total_node = total_nodes(height, branch)
 
 
-nodes = [i for i in range(1, total_node+1)]
 def tree(nodes, branch):
     tree = {}
     pointer = 1
@@ -24,32 +19,47 @@ def tree(nodes, branch):
             pointer += 1
     return tree
 
-tree_ = tree(nodes, branch)
-print(tree_)
 
 def dfs(tree, start, end):
     stack = []
     stack.append(start)
-    visited = []
-    path = []
-    path.append(start)
+    actual_path = []
+    actual_path.append(start)
     pointer = start
     while pointer != end:
-        print(stack)
         if tree[pointer]:  
             pointer = tree[pointer][0]
             stack.append(pointer)
-            path.append(pointer)
+            actual_path.append(pointer)
         else:
             stack.pop()
             tree[stack[-1]].pop(0) 
             pointer = stack[-1]
-            path.append(pointer)
-    return path
+            actual_path.append(pointer)
+    return actual_path, stack
+
+height = int(input("Enter the number of height in tree: "))
+branch = int(input("Enter the number of branch in node: "))
+start = int(input("Enter the start number: "))
+end = int(input("Enter the end number: "))
+
+total_node = total_nodes(height, branch)
+
+nodes = [i for i in range(1, total_node+1)]
+try:
+
+    tree_ = tree(nodes, branch)
+    print(tree_)
 
 
-print(dfs(tree_, 1, 5))
-    
+    actual_path , path = dfs(tree_, start, end)
+    print(actual_path, path)
+except:
+    print("Error the start and end is not valid")
+
+
+
+
     
 
 

@@ -1,14 +1,15 @@
-def min_moves(nums):
-    moves = 0
-    for i in range(len(nums)-1):
-        if nums[i] >= nums[i+1]:
-            moves += nums[i] - nums[i+1]
-            # nums[i+1] = nums[i]
-    return moves
+def find_erc_pairs(x, y):
+    list2 = []
+    for a in range(1, x+1):
+        for b in range(1, min(a, y+1)):  # b should be less than or equal to a and y
+            if a // b == a % b:
+                list2.append((a, b))
+    return list2
 
- 
-
-
-
-numbers = [92, 189, 6, 84, 168, 93, 42, 91, 105, 105, 103, 27, 36, 74, 186, 35, 131, 47, 95, 108, 74, 21, 191, 154, 13, 9, 94, 198, 79, 185, 190, 197, 54, 140, 131, 141, 88, 1886, 141, 185, 192, 127, 183, 154, 103, 93, 71, 115, 0, 72, 62, 77, 122, 31, 3, 80, 27, 43, 78, 13, 146, 172, 94, 112, 86, 69, 88, 77, 109, 8, 14, 133, 182, 134, 1708, 183, 154, 102, 38, 188, 49, 123, 11, 48, 174, 54, 6, 109, 7, 40, 86, 13, 80, 38, 199, 25, 5, 30]
-print(min_moves(numbers))
+# Test the function
+x = 303578353
+y = 24778
+list2 = find_erc_pairs(x, y)
+print(f"ERC pairs between {x} and {y} are: {list2}")
+print("This is the length")
+print(len(list2))
