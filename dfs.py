@@ -48,25 +48,47 @@ def create_boundary():
     pygame.draw.rect(screen, RED, (0, 0, GATE_WIDTH, HEIGHT))  # Left
     pygame.draw.rect(screen, RED, (WIDTH - GATE_WIDTH, 0, GATE_WIDTH, HEIGHT))  # Right
 
-def snake(grid):
-    pygame.draw.rect(screen, RED, (0, 0, OBSTACLE_SIZE, OBSTACLE_SIZE))
 
-def snake_up_down_moves(grid, pos):
-    valid_moves = []
+
+
+def snake(grid, snake_pos):
+    # Draw the head of the snake in red
+    pygame.draw.rect(screen, RED, (snake_pos[0] * OBSTACLE_SIZE, snake_pos[1] * OBSTACLE_SIZE, OBSTACLE_SIZE, OBSTACLE_SIZE))
+    
+    
+
+
+def move_snake(grid, snake_pos, snake_visited):
     direction = [(0, -1), (0, 1) , (1, 0), (-1, 0)]
+    snake_vistied.append(snake_pos)
+    print(snake_visited)
 
+    
+    snake_visited.append(snake_pos)
+    random.shuffle(direction)
     for dx, dy in direction:
-        new_x, new_y = pos[0] + dx, pos[1] + dy
-        if 0 <= new_x < len(grid[0]) and 0 <= new_y < len(grid) and grid[new_y][new_x] == 0:
-            valid_moves.append((new_x, new_y))
-    return valid_moves
+        new_x, new_y = snake_pos[0] + dx, snake_pos[1] + dy
+        if 0 <= new_x < len(grid[0]) and 0 <= new_y < len(grid) and grid[new_y][new_x] == 1:
+            if (new_x, new_y) not in snake_visited:
+                print("new_x, new_y", new_x, new_y)
+                snake_visited.pop(0)
+                # print(visited)
+                return (new_x, new_y)
+    return snake_pos
 
+
+
+            
+            
+        
+    
+
+snake_vistied = []
 
 def main():
     grid = initialize_grid()
     generate_maze(0, 0, grid)
-    snake_position = [(0, 0)]
-
+    snake_position = (0,0)
 
     while True:
         screen.fill(BLACK)
@@ -75,13 +97,13 @@ def main():
                 pygame.quit()
                 sys.exit()
 
-        # draw the maze
-        create_obstacles(grid)
-        # create_boundary()
+        create_obstacles(grid)  # Draw the maze obstacles first
+        snake_position = move_snake(grid, snake_position, snake_vistied)  # Update snake position after drawing
+        snake(grid, snake_position)  # Draw the snake on top of the maze
 
-        snake(grid)
+
         pygame.display.flip()
-        clock.tick(60)
+        clock.tick(10)
 
 if __name__ == "__main__":
     main()
